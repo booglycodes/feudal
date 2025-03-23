@@ -86,6 +86,9 @@ async function createOrUpdate(isUpdating) {
     } else {
         alert('created piece!')
     }
+
+    moves = await getLegalMoves()
+    await drawBoard()
 }
 
 const createPiece = document.getElementById('create-or-update-piece')
