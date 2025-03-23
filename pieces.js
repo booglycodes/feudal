@@ -76,6 +76,7 @@ async function createOrUpdate(isUpdating) {
             code,
             runners
         }
+        loadedPiece = pieceName.value
     } else {
         alert('piece already exists. if you want to change it, load it and then update it.')
         return
