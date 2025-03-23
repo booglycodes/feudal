@@ -1,0 +1,100 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.drawing-panels {
+    display: flex;
+    align-items: center;
+    flex: 0 1 auto;
+}
+
+.controls {
+    margin-top: 10px;
+    flex: 0 1 auto;
+}
+
+.editor-container {
+    flex: 1 1 auto;
+    margin-right: 10px;
+}
+
+#editor {
+    width: 100%; 
+    height: 100%;
+}
+
+.drawing-canvas {
+    border: 2px solid black;
+    image-rendering: pixelated;
+    cursor: crosshair;
+    background-size: var(--checker-size) var(--checker-size);
+    background-image: linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%),
+                       linear-gradient(45deg, #ccc 25%, white 25%, white 75%, #ccc 75%);
+    background-position: 0 0, calc(var(--checker-size) / 2) calc(var(--checker-size) / 2);
+}
+
+.drawing-controls, .create-piece-controls {
+    background-color: burlywood;
+}
+
+.drawing-controls {
+    flex: 1;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.drawing-controls > * {
+    margin: 10px 4px;
+}
+
+.create-piece-controls {
+    width: 100%; 
+    height:100%; 
+    margin: 10px;
+}
+
+.create-piece-controls > * {
+   margin-left: 5px;
+   margin-bottom: 5px;
+}
+
+.arrow {
+    font-size: 36px;
+    cursor: pointer;
+    user-select: none;
+    margin: 25px;
+}
+
+.chessboard {
+    border: 2px solid black;
+    image-rendering: pixelated;
+}
+
+.dropdown-menu {
+    position: absolute;
+    background-color: grey;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: darkgrey;
+}
+

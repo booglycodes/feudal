@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feudal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div style="display: flex; flex-direction: row; height: 100%; margin: 0.5%;">
+        <div style="flex: 1; display: flex; flex-direction: column; height: 100%;">
+            <div class="drawing-panels">
+                <canvas class="drawing-canvas" id="draw-piece-white"></canvas>
+                <span class="arrow" id="copy-arrow">➡</span>
+                <canvas class="drawing-canvas" id="draw-piece-black"></canvas>
+                <div class="create-piece-controls">
+                    <input id="piece-name" type="text" style="width: 60%; margin-top: 10px;"> <br>
+                    <button id="create-piece">Create piece</button> <br>
+                    <button id="load-piece">Load piece</button> <br>
+                    <button id="update-piece">Update piece</button> <br>
+                    <button id="sync">Sync</button> <br>
+                </div>
+            </div>
+            <div class="drawing-controls">
+                <input type="color" id="color-picker" value="#000000">
+                <input type="checkbox" id="erase">Erase</button>
+                <input type="checkbox" id="mirror-x">Mirror X</button>
+                <input type="checkbox" id="mirror-y">Mirror Y</button>
+                <input type="checkbox" id="fill">Fill</button>
+                <button id="fill-dir">4-directional fill</button>
+                <button id="clear-white">Clear White</button>
+                <button id="clear-black">Clear Black</button>
+                <button id="undo" disabled>Undo</button>
+                <button id="redo" disabled>Redo</button>
+            </div>
+            <div class="editor-container">
+                <div id="editor"></div>
+            </div>
+        </div>
+        <div style="flex: 0.8; display: flex; height: 100%; justify-content: center;"> 
+            <div> 
+                <canvas class="chessboard" id="chessboard" width="512" height="512"></canvas>
+                <div>
+                    <input type="checkbox" id="add-piece">Add Piece</button>
+                    <button id="add-piece-color">add white pieces</button>
+                    <div id="piece-info"></div>
+                    <div id="turn-info"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="sheets.js"></script>
+    <script src="library.js"></script>
+    <script src="editor.js"></script>
+    <script src="draw-piece.js"></script>
+    <script src="runner.js"></script>
+    <script src="pieces.js"></script>
+    <script src="chessboard.js"></script>
+</body>
+</html>
