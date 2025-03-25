@@ -135,7 +135,7 @@ function library() {
     function displacementMoves(pieceId, state, locs, allowCaptures) {
         let moves = []
         for (let loc of locs) {
-            let move = structuredClone(state)
+            let move = JSON.parse(JSON.stringify(state))
             let piece = move.pieces[pieceId]
             if (!isValidLoc(loc)) {
                 continue
@@ -197,7 +197,7 @@ function library() {
      * @return {State} copy of state
      */
     function copyState(state) {
-        return structuredClone(state)
+        return JSON.parse(JSON.stringify(state))
     }
 
     /**
@@ -206,7 +206,7 @@ function library() {
      * @return {Move} copy of move
      */
     function copyMove(move) {
-        return structuredClone(move)
+        returnJSON.parse(JSON.stringify(move))
     }
 
     return {addLoc, subLoc, chessDist, isValidLoc, cardinals, diagonals, knightDirs, createMove, getMoveDisplacement, getPieces, displacementMoves, getAllPossibleLocationsInDirections, copyMove, copyState}

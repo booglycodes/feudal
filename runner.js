@@ -48,7 +48,7 @@ function workerScript() {
     }
 
     let safeScope = Object.create(null)
-    const WHITELIST = ['console', 'postMessage', 'Function', 'structuredClone', 'library', 'Math', 'Set', 'performance', 'eval']
+    const WHITELIST = ['console', 'postMessage', 'Function', 'library', 'Math', 'JSON']
     for (let key of getAllProperties(self)) {
         if (WHITELIST.includes(key)) {
             continue
