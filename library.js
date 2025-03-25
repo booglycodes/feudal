@@ -135,7 +135,7 @@ function library() {
     function displacementMoves(pieceId, state, locs, allowCaptures) {
         let moves = []
         for (let loc of locs) {
-            let move = JSON.parse(JSON.stringify(state))
+            let move = deepClone(state)
             let piece = move.pieces[pieceId]
             if (!isValidLoc(loc)) {
                 continue
@@ -191,13 +191,23 @@ function library() {
         return locs
     }
 
+    function deepClone(obj) {
+        if (obj === null || typeof obj !== 'object') return obj
+        if (Array.isArray(obj)) return obj.map(deepClone)
+        const cloned = {}
+        for (const key in obj) {
+            cloned[key] = deepClone(obj[key])
+        }
+        return cloned
+    }
+
     /**
      * @function copyState
      * @param {State} state
      * @return {State} copy of state
      */
     function copyState(state) {
-        return JSON.parse(JSON.stringify(state))
+        return deepClone(state)
     }
 
     /**
@@ -206,7 +216,7 @@ function library() {
      * @return {Move} copy of move
      */
     function copyMove(move) {
-        returnJSON.parse(JSON.stringify(move))
+        return deepClone(move)
     }
 
     return {addLoc, subLoc, chessDist, isValidLoc, cardinals, diagonals, knightDirs, createMove, getMoveDisplacement, getPieces, displacementMoves, getAllPossibleLocationsInDirections, copyMove, copyState}
