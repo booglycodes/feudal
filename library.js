@@ -52,7 +52,7 @@ function library() {
     function chessDist(a, b) {
         let xdist = Math.abs(a[0] - b[0])
         let ydist = Math.abs(a[1] - b[1])
-        return xdist.max(ydist)
+        return Math.max(xdist, ydist)
     }
 
     /**

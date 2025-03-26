@@ -37,20 +37,21 @@ require(["vs/editor/editor.main"], function () {
 * @returns {Move[]} - A list of possible moves.
 */
 function moves(pieceId, state) {
-    return [{ name: "move1", cursed: false, loc: [0, 0], state, pieceId }]
+    let piece = state.pieces[pieceId]
+    return [lib.createMove(pieceId, state, "do nothing", piece.loc)]
 }
 
 /**
-* @function rules
+* @function filter
 * @param {State} state - The game state.
 * @param {Move[]} moves - The list of moves.
-* @returns {Move[]} updated moves (use 'cursed' field to mark a move as disallowed).
+* @returns {boolean[]} flag for each move that dictates whether to keep or discard it.
 */
-function rules(state, moves) {
-    return moves
+function filter(state, moves) {
+    return Array(moves.length).fill(true)
 }
 
-return { moves, rules }`,
+return { moves, filter }`,
         language: "javascript",
         theme: "vs-dark",
         automaticLayout: true

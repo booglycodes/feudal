@@ -271,6 +271,11 @@ async function processMoves(mv) {
     return m.flat().flat()
 }
 
+async function filterMoves(mv, state, moves) {
+    let filters = await Promise.all(Object.keys(mv).map(pieceName => pieces[pieceName].runners[0].filter(state, moves)))
+    return filters.reduce((acc, row) => acc.map((val, i) => val && row[i]))
+}
+
 async function processCanCaptureKing(mv) {
     const results = await Promise.all(Object.keys(mv).flatMap(pieceName => {
         const moves = mv[pieceName];
@@ -364,14 +369,16 @@ async function getLegalMoves() {
     }
     let movesWithoutCheck = moves.filter((_, i) => !banned[i])
     console.log(`Filtering bad moves: ${(performance.now() - startFilteringBadMoves).toFixed(2)} ms`)
+    let allowed = await filterMoves(z, state, movesWithoutCheck)
+    let allowedMoves = movesWithoutCheck.filter((_, i) => allowed[i])  
 
-    if (movesWithoutCheck.length === 0) {
+    if (allowedMoves.length === 0) {
         let startCheckmateAlert = performance.now()
         alert('checkmate!')
         console.log(`checkmate alert: ${(performance.now() - startCheckmateAlert).toFixed(2)} ms`)
     }
 
     console.log(`Total getLegalMoves: ${(performance.now() - startTotal).toFixed(2)} ms`)
-    return movesWithoutCheck
+    return allowedMoves
 }
 

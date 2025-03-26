@@ -28,9 +28,12 @@ function getRunner() {
         async canCaptureKing(batch) {
             return handleWorkerRequest('canCaptureKing', {batch})
         },
+        async filter(state, moves) {
+            return handleWorkerRequest('filter', {state, moves})
+        },
         async init(code) {
             this.code = code
-            return handleWorkerRequest('init', { code })
+            return handleWorkerRequest('init', {code})
         },
     }
 }
@@ -62,13 +65,11 @@ function workerScript() {
 
     let exports = null
     self.onmessage = function (e) {
-        let { id, type, batch, code } = e.data
+        let { id, type, batch, code, state, moves } = e.data
         try {
             if (type === 'init') {
                 try {
                     exports = new Function(code)()
-                    if (typeof exports.moves !== 'function') throw "Missing required 'moves' function"
-                    if (typeof exports.rules !== 'function') throw "Missing required 'rules' function"
                     postMessage({ id })
                 } catch (err) {
                     exports = null
@@ -90,17 +91,14 @@ function workerScript() {
             } 
             if (type === 'canCaptureKing') {
                 let results = []
-                
                 for (let { pieceIds, state } of batch) {
                     let kingAlreadyCaptured = state.pieces.some(piece => 
                         piece.name === 'king' && piece.color !== state.turn && piece.captured
                     )
-                
                     if (kingAlreadyCaptured) {
                         results.push(state.origin)
                         continue
                     }
-                
                     for (let pieceId of pieceIds) {
                         let moves = exports.moves(pieceId, state)
                         if (moves.some(move => 
@@ -111,9 +109,15 @@ function workerScript() {
                         }
                     }
                 }
-            
                 postMessage({ id, result: results })
-                
+                return
+            }
+            if (type === 'filter') {
+                if (exports.filter === undefined) {
+                    postMessage({ id, result: new Array(moves.length).fill(true) })
+                } else {
+                    postMessage({ id, result: exports.filter(state, moves) })
+                }
                 return
             }
             throw "Received invalid request type: " + type
