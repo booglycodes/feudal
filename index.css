@@ -98,3 +98,16 @@ body {
     background-color: darkgrey;
 }
 
+#piece-info {
+    max-width: 500px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    word-wrap: break-word;
+}
+
+#turn-info {
+    max-width: 500px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    word-wrap: break-word;
+}

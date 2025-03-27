@@ -22,6 +22,9 @@ function getRunner() {
 
     return {
         worker,
+        async start(state) {
+            return handleWorkerRequest('start', {state})
+        },
         async moves(batch) {
             return handleWorkerRequest('moves', {batch})
         },
@@ -31,9 +34,10 @@ function getRunner() {
         async filter(state, moves) {
             return handleWorkerRequest('filter', {state, moves})
         },
-        async init(code) {
+        async init(code, pieceName) {
             this.code = code
-            return handleWorkerRequest('init', {code})
+            this.pieceName = pieceName
+            return handleWorkerRequest('init', {code, pieceName})
         },
     }
 }
@@ -64,12 +68,14 @@ function workerScript() {
     }
 
     let exports = null
+    let name = null
     self.onmessage = function (e) {
-        let { id, type, batch, code, state, moves } = e.data
+        let { id, type, batch, code, state, moves, pieceName } = e.data
         try {
             if (type === 'init') {
                 try {
                     exports = new Function(code)()
+                    name = pieceName
                     postMessage({ id })
                 } catch (err) {
                     exports = null
@@ -78,7 +84,22 @@ function workerScript() {
                 return
             }
             if (!exports) throw 'worker has not been successfully initialized'
-
+            if (type === 'start') {
+                if (exports.start === undefined) {
+                    postMessage({ id, result: state })
+                    return 
+                }
+                let startState = exports.start()
+                for (let piece of state.pieces) {
+                    if (piece.name === name) {
+                        for (let key in startState) {
+                            piece[key] = startState[key]
+                        }
+                    }
+                }
+                postMessage({ id, result: state })
+                return 
+            }
             if (type === 'moves') {
                 let results = []
                 for (let {pieceIds, state} of batch) {

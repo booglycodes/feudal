@@ -43,6 +43,10 @@ function library() {
         return [a[0] - b[0], a[1] - b[1]]
     }
 
+    function locEq(a, b) {
+        return a[0] === b[0] && a[1] === b[1]
+    }
+
     /**
     * @function chessDist
     * @param {[number, number]} a - loc
@@ -219,5 +223,5 @@ function library() {
         return deepClone(move)
     }
 
-    return {addLoc, subLoc, chessDist, isValidLoc, cardinals, diagonals, knightDirs, createMove, getMoveDisplacement, getPieces, displacementMoves, getAllPossibleLocationsInDirections, copyMove, copyState}
+    return {addLoc, subLoc, locEq, chessDist, isValidLoc, cardinals, diagonals, knightDirs, createMove, getMoveDisplacement, getPieces, displacementMoves, getAllPossibleLocationsInDirections, copyMove, copyState}
 }

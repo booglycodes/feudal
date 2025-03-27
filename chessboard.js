@@ -48,6 +48,12 @@ const squareSize = canvas.width / boardSize
 const pieceShadowDisplacement = [8, 2]
 const maxPiecesShadowing = 3
 
+function formatJson(json) {
+    return Object.entries(json)
+      .map(([key, value]) => `${key} = ${JSON.stringify(value)}`)
+      .join("\n")
+}
+
 let shift = 0
 let topPiece = {}
 let locsToMoves = {}
@@ -55,7 +61,6 @@ async function drawBoard() {
     if (moves == null) {
         return
     }
-    let startDrawBoard = performance.now()
     // dirty hack to make locsToMoves consistent. This sucks. should seperate into two passes instead of just drawing it all
     // twice, but because the chessboard is so low resolution and there are so few objects, drawing it twice is fine (perf-wise)
     for (let i = 0; i < 2; i++) { 
@@ -64,7 +69,7 @@ async function drawBoard() {
         if (squareSelection !== null) {
             let piece = state.pieces[topPiece[squareSelection[0] + ',' + squareSelection[1]]]
 
-            document.getElementById('piece-info').textContent = JSON.stringify(piece)
+            document.getElementById('piece-info').textContent = formatJson(piece)
             locsToMoves = {}
             for (let move of moves) {
                 if (move.pieceId === piece.id) {
@@ -250,6 +255,10 @@ function createDropdown(x, y, options) {
 async function init() {
     authToken = await fetchAuthToken()
     pieces = await loadPiecesFromSheet()
+    for (let pieceName in pieces) {
+        console.log(state)
+        state = await pieces[pieceName].runners[0].start(state)
+    }
     moves = await getLegalMoves()
     await drawBoard()
 }

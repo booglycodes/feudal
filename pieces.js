@@ -20,7 +20,7 @@ async function loadPiecesFromSheet() {
                 piece.runners.push(getRunner())
             }
             for (let runner of piece.runners) {
-                await runner.init(piece.code)
+                await runner.init(piece.code, piece.name)
             }
             loadedPieces[piece.name] = piece
         }
